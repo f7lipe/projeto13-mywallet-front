@@ -2,14 +2,34 @@ import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import { useState } from "react"
+import {useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login(){
-
+    const url = 'http://127.0.0.1:5000/signin'
     const [signinData, setSigninData] = useState({email:'', password:''})
     const [loading, setLoading] = useState(false)
+    let redirectUser = useNavigate()
+
     function login(event){
         event.preventDefault()
-        setLoading(true)  
+        setLoading(true) 
+        const promise = axios.post(url, 
+            {
+                email: signinData.email,
+                password: signinData.password
+            }
+        )
+        promise.then((response)=>{
+            const {token} = response
+            localStorage.setItem('myWallet-Token', token)
+            setLoading(false)
+            redirectUser("/home")
+        })
+        .catch(err =>{
+            alert(err.response.data)
+            setLoading(false)
+        })
     }
     
     return(

@@ -15,14 +15,13 @@ function SignUp() {
     function signup(event){
         setLoading(true)  
         event.preventDefault()
-        console.log(signupData)
         const promise = axios.post(url, 
             {
                 email: signupData.email, 
                 name: signupData.name, 
                 password: signupData.password, 
             }
-            )
+        )
         promise.then(()=>{
             alert('Cadastro realizado. Faça login para continuar.')
             setLoading(false) 
@@ -31,7 +30,7 @@ function SignUp() {
         .catch(err =>{
             alert(err.response.data)
             setLoading(false)
-        });
+        })
         
     }
 
