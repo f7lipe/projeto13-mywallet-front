@@ -3,16 +3,36 @@ import { Link } from "react-router-dom";
 import styled from "styled-components"
 import { ThreeDots } from "react-loader-spinner";
 import { useState } from "react";
+import {useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SignUp() {
-
-    const [signupData, setSignupData] = useState({email:'', name:'', image:'', password:'', photoUrl:''})
+    const url = 'http://127.0.0.1:5000/signup'
+    const [signupData, setSignupData] = useState({email:'', name:'', password:''})
     const [loading, setLoading] = useState(false)
-    //let redirectUser = useNavigate()
+    let redirectUser = useNavigate()
     
     function signup(event){
-        event.preventDefault()
         setLoading(true)  
+        event.preventDefault()
+        console.log(signupData)
+        const promise = axios.post(url, 
+            {
+                email: signupData.email, 
+                name: signupData.name, 
+                password: signupData.password, 
+            }
+            )
+        promise.then(()=>{
+            alert('Cadastro realizado. Faça login para continuar.')
+            setLoading(false) 
+            redirectUser("/") 
+        })
+        .catch(err =>{
+            alert(err.response.data)
+            setLoading(false)
+        });
+        
     }
 
     
