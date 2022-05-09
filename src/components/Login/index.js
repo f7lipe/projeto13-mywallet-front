@@ -26,7 +26,6 @@ function Login(){
             const token = response.data
             setToken(token)
             localStorage.setItem('myWallet-Token', token)
-            console.log(token)
             setLoading(false)
             redirectUser("/home")
         })
