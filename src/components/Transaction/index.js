@@ -33,6 +33,7 @@ const Description = styled.p`
 
 const Amount = styled.p`
 color: ${props => props.type === 'input' ? "green" : "red"};
+font-family: 'Raleway';
 `
 
 export default Transaction

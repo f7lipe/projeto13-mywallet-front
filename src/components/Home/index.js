@@ -17,8 +17,16 @@ function Home() {
     const [transactions, setTransations] = useState([])
     const [balance, setBalance] = useState(0)
 
+    // Para formatar número em formato de moeda
+var formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+});
+
+
+
     function getUser(){
-        const url = "http://127.0.0.1:5000/user"
+        const url = "https://projeto13-mywallet-filipe.herokuapp.com/user"
         const promise = axios.get(url, headers)
         promise.then((response) =>{
             const {userName} = response.data
@@ -32,7 +40,7 @@ function Home() {
     }
 
     function getTransactions(){
-        const url = "http://127.0.0.1:5000/transactions"
+        const url = "https://projeto13-mywallet-filipe.herokuapp.com/transactions"
         const promise = axios.get(url, headers)
         promise.then((response) =>{
             const transactions = response.data
@@ -44,7 +52,7 @@ function Home() {
     }
 
     function getBalance(){
-        const url = "http://127.0.0.1:5000/balance"
+        const url = "https://projeto13-mywallet-filipe.herokuapp.com/balance"
         const promise = axios.get(url, headers)
         promise.then((response) =>{
             const {balance} = response.data
@@ -76,22 +84,24 @@ function Home() {
 
 
             <WhiteBoard>
-                
+                {transactions.length === 0 && <Label>Nenhuma transação foi feita ainda.</Label>}    
                 {
-                    transactions.map(transaction=>
-                        <Transaction 
-                        date={transaction.date}
-                        type={transaction.type}
-                        description={transaction.description}
-                        amount = {transaction.amount}
-                        />
-                    )
+                                        transactions.map(transaction=>
+                                            <Transaction 
+                                            key={Math.random()}
+                                            date={transaction.date}
+                                            type={transaction.type}
+                                            description={transaction.description}
+                                            amount = {formatter.format(transaction.amount)}
+                                            />
+                                        )
+                    
                 }
-
+                {transactions.length !== 0 && 
                 <Balance>
                     <Amount_>SALDO</Amount_>
-                    <Amount>{balance}</Amount>
-                </Balance>
+                    <Amount>{formatter.format(balance)}</Amount>
+                </Balance>}
             </WhiteBoard>
         </Main>
 
@@ -171,6 +181,7 @@ const WhiteBoard = styled.section`
 width: 80%;
 height: 100%;
 background-color: white;
+
 border-radius: 10px;
 overflow-y: scroll;
 `
@@ -181,7 +192,7 @@ justify-content: space-between;
 align-items: center;
 padding: 5px;
 height: 15px;
-font-size: large;
+font-size: medium;
 color: black;
 margin: 10px;
 margin-top: 40px;
@@ -191,6 +202,18 @@ const Amount = styled.p`
 color: green;
 font-weight: 900;
 font-size: x-large;
+font-family: 'Raleway', sans-serif;
+`
+
+const Label = styled.p`
+color: gray;
+font-weight: 700;
+font-size: small;
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
 `
 
 const Amount_ = styled.p`

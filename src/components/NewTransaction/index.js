@@ -4,7 +4,6 @@ import { ThreeDots } from "react-loader-spinner";
 import { useState, useContext } from "react"
 import configHeaders from "../../functions/configHeaders";
 import axios from "axios";
-import dayjs from "dayjs";
 
 import TokenContext from "../../contexts/TokenContext";
 
@@ -19,13 +18,12 @@ function NewTransaction(){
 
     function confirmTrasaction(event){
         event.preventDefault()
-        const url = 'http://127.0.0.1:5000/transactions'
+        const url = 'https://projeto13-mywallet-filipe.herokuapp.com/transactions'
         setLoading(true) 
         const promise = axios.post(url,  
             {
                 type: type,
                 description: transactionData.description, 
-                date: dayjs().get('date'), 
                 amount: transactionData.value
             }, headers
         )
@@ -45,7 +43,7 @@ function NewTransaction(){
         <Main>
         <Form onSubmit={confirmTrasaction}> 
             <Label>
-                <Input type="number" pattern="\d*"  name="number" placeholder="Valor" value={transactionData.value} onChange={(e)=>setTransactionData({...transactionData, value: e.target.value})} required disabled={loading}/>
+                <Input  type="number" pattern="\d*"  name="number" placeholder="Valor" value={transactionData.value} onChange={(e)=>setTransactionData({...transactionData, value: e.target.value})} required disabled={loading}/>
             </Label>
             <Label>
 

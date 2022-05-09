@@ -7,7 +7,7 @@ import {useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function SignUp() {
-    const url = 'http://127.0.0.1:5000/signup'
+    const url = 'https://projeto13-mywallet-filipe.herokuapp.com/signup'
     const [signupData, setSignupData] = useState({email:'', name:'', password:''})
     const [loading, setLoading] = useState(false)
     let redirectUser = useNavigate()
