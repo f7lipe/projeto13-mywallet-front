@@ -64,14 +64,14 @@ function Home() {
             <WhiteBoard>
                 
                 {
-                    transactions.forEach(transaction=>{
+                    transactions.map(transaction=>
                         <Transaction 
                         date={transaction.date}
                         type={transaction.type}
                         description={transaction.description}
                         amount = {transaction.amount}
                         />
-                    })
+                    )
                 }
 
                 <Balance>

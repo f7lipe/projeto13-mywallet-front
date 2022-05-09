@@ -1,15 +1,42 @@
 import styled from "styled-components"
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react"
+import { useState, useContext } from "react"
+import configHeaders from "../../functions/configHeaders";
+import axios from "axios";
+import dayjs from "dayjs";
+
+import TokenContext from "../../contexts/TokenContext";
+
 function NewTransaction(){
 
     const {type} = useParams()
+    const {token} = useContext(TokenContext)
+    const headers = configHeaders(token)
     const [transactionData, setTransactionData] = useState({value:'', description:''})
     const [loading, setLoading] = useState(false)
+    const redirectUser = useNavigate()
+
     function confirmTrasaction(event){
         event.preventDefault()
-        setLoading(true)  
+        const url = 'http://127.0.0.1:5000/transactions'
+        setLoading(true) 
+        const promise = axios.post(url,  
+            {
+                type: type,
+                description: transactionData.description, 
+                date: dayjs().get('date'), 
+                amount: transactionData.value
+            }, headers
+        )
+        promise.then(()=>{
+            setLoading(false)
+            redirectUser("/home")
+        })
+        .catch((error) =>{
+            console.log(error)
+        })
+        
     }
 
     return(
