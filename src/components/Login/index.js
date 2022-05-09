@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
-import { useState } from "react"
+import { useState, useContext } from "react"
 import {useNavigate } from "react-router-dom";
+import TokenContext from "../../contexts/TokenContext";
 import axios from "axios";
 
 function Login(){
     const url = 'http://127.0.0.1:5000/signin'
     const [signinData, setSigninData] = useState({email:'', password:''})
     const [loading, setLoading] = useState(false)
+    const { setToken } = useContext(TokenContext)
     let redirectUser = useNavigate()
 
     function login(event){
@@ -21,8 +23,10 @@ function Login(){
             }
         )
         promise.then((response)=>{
-            const {token} = response
+            const token = response.data
+            setToken(token)
             localStorage.setItem('myWallet-Token', token)
+            console.log(token)
             setLoading(false)
             redirectUser("/home")
         })

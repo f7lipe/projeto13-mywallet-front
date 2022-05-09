@@ -1,10 +1,15 @@
 import styled from "styled-components"
 import Transaction from "../Transaction"
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 
 function Home() {
     const redirectUser = useNavigate()
+
+    function getUser(){
+
+    }
+
     function newTransaction(type){
         redirectUser(`/new/${type}`)
     }
