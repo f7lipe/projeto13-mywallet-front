@@ -15,6 +15,7 @@ function Home() {
     const headers = configHeaders(token)
     const [username, setUserName] = useState("")
     const [transactions, setTransations] = useState([])
+    const [balance, setBalance] = useState(0)
 
     function getUser(){
         const url = "http://127.0.0.1:5000/user"
@@ -23,6 +24,7 @@ function Home() {
             const {userName} = response.data
             setUserName(userName)
             getTransactions()
+            getBalance()
         })
         .catch((error)=>{
             console.log("Falha ao obter usuário.")
@@ -35,6 +37,18 @@ function Home() {
         promise.then((response) =>{
             const transactions = response.data
             setTransations(transactions)
+        })
+        .catch((error)=>{
+            console.log("Falha ao obter transações do usuário.")
+        })
+    }
+
+    function getBalance(){
+        const url = "http://127.0.0.1:5000/balance"
+        const promise = axios.get(url, headers)
+        promise.then((response) =>{
+            const {balance} = response.data
+            setBalance(balance)
         })
         .catch((error)=>{
             console.log("Falha ao obter transações do usuário.")
@@ -76,7 +90,7 @@ function Home() {
 
                 <Balance>
                     <Amount_>SALDO</Amount_>
-                    <Amount>222.99</Amount>
+                    <Amount>{balance}</Amount>
                 </Balance>
             </WhiteBoard>
         </Main>
